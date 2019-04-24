@@ -1,3 +1,9 @@
 <resources>
     <string name="app_name">MusicPlayer</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="enter_song_name">Enter Song Name</string>
+    <string name="enter_singer_name">Enter Singer Name</string>
+    <string name="enter_lyrics">Enter Lyrics</string>
 </resources>

@@ -1,6 +1,7 @@
 package com.example.musicplayer;
 
 import android.Manifest;
+import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.database.Cursor;
 import android.media.MediaPlayer;
@@ -17,6 +18,7 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.View;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.SeekBar;
@@ -30,6 +32,7 @@ public class MainActivity extends AppCompatActivity {
     ArrayList<SongModel> songs = new ArrayList<SongModel>();
     RecyclerView recyclerView;
     SeekBar seekBar;
+    Button lyrics, addlyrics;
     RecyclerAdaptor recyclerAdaptor;
     MediaPlayer mediaPlayer;
     private Handler handler = new Handler();
@@ -40,13 +43,29 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         recyclerView = (RecyclerView) findViewById(R.id.rv);
         seekBar = (SeekBar)findViewById(R.id.seekBar);
-
+        lyrics = (Button)findViewById(R.id.lyrics);
+        addlyrics=(Button)findViewById(R.id.addlyrics);
         recyclerAdaptor = new RecyclerAdaptor(songs,this);
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this);
         DividerItemDecoration dividerItemDecoration = new DividerItemDecoration(recyclerView.getContext(),linearLayoutManager.getOrientation());
         recyclerView.addItemDecoration(dividerItemDecoration);
         recyclerView.setLayoutManager(linearLayoutManager);
         recyclerView.setAdapter(recyclerAdaptor);
+
+        lyrics.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(MainActivity.this, AfterLyrics.class);
+                startActivity(intent);
+            }
+        });
+        addlyrics.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(MainActivity.this, AfterAddLyrics.class);
+                startActivity(intent);
+            }
+        });
 
         recyclerAdaptor.setOnItemClickListener(new RecyclerAdaptor.OnItemClickListener() {
             @Override
@@ -164,7 +183,7 @@ public class MainActivity extends AppCompatActivity {
                     String singer = cursor.getString(cursor.getColumnIndex(MediaStore.Audio.Media.ARTIST));
                     String url = cursor.getString(cursor.getColumnIndex(MediaStore.Audio.Media.DATA));
 
-                    SongModel song = new SongModel(name,singer,url);
+                    SongModel song = new SongModel(name,singer,url,null);
                     songs.add(song);
                 }while (cursor.moveToNext());
             }

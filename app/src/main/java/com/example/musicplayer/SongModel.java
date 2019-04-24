@@ -5,16 +5,19 @@ public class SongModel {
     String songName;
     String singerName;
     String songURL;
+    String lyrics;
 
     public SongModel() {
 
     }
 
-    public SongModel(String songName, String singerName, String songURL) {
+    public SongModel(String songName, String singerName, String songURL, String lyrics) {
         this.songName = songName;
         this.singerName = singerName;
         this.songURL = songURL;
+        this.lyrics = lyrics;
     }
+
 
     public String getSongName() {
         return songName;
@@ -40,5 +43,12 @@ public class SongModel {
         this.songURL = songURL;
     }
 
+    public String getLyrics() {
+        return lyrics;
+    }
+
+    public void setLyrics(String lyrics) {
+        this.lyrics = lyrics;
+    }
 
 }
