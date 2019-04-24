@@ -56,34 +56,39 @@ public class LyricsRecyclerViewFragment extends Fragment {
         rootView = inflater.inflate(R.layout.fragment_lyrics_recycler_view, container, false);
         lrv = (RecyclerView) rootView.findViewById(R.id.lrv);
         lrv.setLayoutManager(new LinearLayoutManager(getActivity()));
-
-        ref.addValueEventListener(new ValueEventListener() {
+        final MyAdaptor adaptor = new MyAdaptor(LItems, new MyAdaptor.OnItemClickListener() {
             @Override
-            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                for(DataSnapshot child : dataSnapshot.getChildren()){
-
-                    SongModel song = child.getValue(SongModel.class);
-                    LItems.add(song);
-
-
-                    MyAdaptor adaptor = new MyAdaptor(LItems, new MyAdaptor.OnItemClickListener() {
-                        @Override
-                        public void onItemClick(SongModel song) {
-                            String lyrics = song.getLyrics();
-                            onMessageSendListener.onMessageSend(lyrics);
-                            //AfterLyrics.fragmentManager.beginTransaction().replace(R.id.fragment_container,new Lyrics(),null).addToBackStack(null).commit();
-                        }
-                    });
-
-                    lrv.setAdapter(adaptor);
-                }
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError databaseError) {
-
+            public void onItemClick(SongModel song) {
+                String lyrics = song.getLyrics();
+                onMessageSendListener.onMessageSend(lyrics);
+                //AfterLyrics.fragmentManager.beginTransaction().replace(R.id.fragment_container,new Lyrics(),null).addToBackStack(null).commit();
             }
         });
+
+
+        if(LItems==null||LItems.isEmpty()){
+            ref.addValueEventListener(new ValueEventListener() {
+                @Override
+                public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                    for(DataSnapshot child : dataSnapshot.getChildren()){
+
+                        SongModel song = child.getValue(SongModel.class);
+                        LItems.add(song);
+                        adaptor.notifyDataSetChanged();
+
+
+
+                    }
+                }
+
+                @Override
+                public void onCancelled(@NonNull DatabaseError databaseError) {
+
+                }
+            });
+
+        }
+        lrv.setAdapter(adaptor);
 
        return rootView;
     }
