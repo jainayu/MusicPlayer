@@ -12,7 +12,7 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
 
-public class AfterLyrics extends AppCompatActivity {
+public class AfterLyrics extends AppCompatActivity implements LyricsRecyclerViewFragment.OnMessageSendListener{
     public  static FragmentManager fragmentManager;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -29,6 +29,17 @@ public class AfterLyrics extends AppCompatActivity {
             fragmentTransaction.add(R.id.fragment_container, lyricsRecyclerViewFragment,null);
             fragmentTransaction.commit();
         }
+    }
+
+    public void onMessageSend(String lyrics) {
+        Lyrics lyricsFragment = new Lyrics();
+        Bundle bundle = new Bundle();
+        bundle.putString("lyrics",lyrics);
+        lyricsFragment.setArguments(bundle);
+
+        FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,lyricsFragment,null);
+        fragmentTransaction.addToBackStack(null);
+        fragmentTransaction.commit();
     }
 
 }
